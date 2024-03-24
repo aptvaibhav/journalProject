@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.myProject.entity.JournalEntry;
 import com.spring.myProject.entity.User;
@@ -22,7 +23,7 @@ public class JournalEntryService {
 
     @Autowired
     private UserService userService;
-
+    @Transactional
     public void saveEntry(JournalEntry journalEntry, User user) {
 
         try {
@@ -32,6 +33,7 @@ public class JournalEntryService {
             userService.saveEntry(user);
         } catch (Exception e) {
             log.error("Exception: ", e);
+            throw new RuntimeException("An error occured while saving the entry",e);
         }
     }
     
